@@ -3,124 +3,137 @@
 ========================= */
 
 
-function getLocalDateTimeParts(
-    date,
-    timezone
-) {
+/**
+ * Get the timezone offset in milliseconds
+ * for a specific instant.
+ */
+function getTimezoneOffset(date, timezone) {
 
-    const formatter =
-        new Intl.DateTimeFormat(
-            "en-US",
-            {
-                timeZone: timezone,
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit",
-                hourCycle: "h23"
-            }
-        );
+    const formatter = new Intl.DateTimeFormat(
+        "en-US",
+        {
+            timeZone: timezone,
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hourCycle: "h23"
+        }
+    );
 
-
-    const parts =
-        formatter.formatToParts(date);
-
+    const parts = formatter.formatToParts(date);
 
     const values = {};
 
     parts.forEach(part => {
 
         if (part.type !== "literal") {
-            values[part.type] =
-                Number(part.value);
+            values[part.type] = Number(part.value);
         }
 
     });
 
+    const localTimeAsUTC = Date.UTC(
+        values.year,
+        values.month - 1,
+        values.day,
+        values.hour,
+        values.minute,
+        values.second
+    );
 
-    return values;
+    return localTimeAsUTC - date.getTime();
 }
 
 
-function getTimezoneOffset(
-    date,
+/**
+ * Convert a wall-clock time in one timezone
+ * into the corresponding UTC Date.
+ *
+ * Example:
+ *
+ * 17 Aug 2026 19:30 Kathmandu
+ *        ↓
+ * UTC
+ */
+function zonedTimeToUTC(
+    dateString,
+    timeString,
     timezone
 ) {
 
-    const parts =
-        getLocalDateTimeParts(
-            date,
-            timezone
-        );
+    const [year, month, day] =
+        dateString.split("-").map(Number);
+
+    const [hours, minutes] =
+        timeString.split(":").map(Number);
 
 
-    const utcTimestamp =
+    /*
+     * Treat the user's selected local date/time
+     * as if it were UTC first.
+     */
+    const wallTime = new Date(
         Date.UTC(
-            parts.year,
-            parts.month - 1,
-            parts.day,
-            parts.hour,
-            parts.minute,
-            parts.second
-        );
-
-
-    return (
-        utcTimestamp -
-        date.getTime()
-    );
-}
-
-
-function convertTimezone(
-    date,
-    fromTimezone,
-    toTimezone
-) {
-
-    const fromParts =
-        getLocalDateTimeParts(
-            date,
-            fromTimezone
-        );
-
-
-    const assumedUTC =
-        Date.UTC(
-            fromParts.year,
-            fromParts.month - 1,
-            fromParts.day,
-            fromParts.hour,
-            fromParts.minute,
+            year,
+            month - 1,
+            day,
+            hours,
+            minutes,
             0
-        );
+        )
+    );
 
 
-    const fromOffset =
-        getTimezoneOffset(
-            new Date(assumedUTC),
-            fromTimezone
-        );
+    /*
+     * Find the offset for this approximate instant.
+     */
+    let offset = getTimezoneOffset(
+        wallTime,
+        timezone
+    );
 
 
-    const utcTime =
-        assumedUTC - fromOffset;
+    /*
+     * Apply the offset.
+     */
+    let utcTime = new Date(
+        wallTime.getTime() - offset
+    );
 
 
-    return new Date(utcTime);
+    /*
+     * Recalculate once more.
+     *
+     * This is important around DST transitions
+     * because the timezone offset can change.
+     */
+    offset = getTimezoneOffset(
+        utcTime,
+        timezone
+    );
+
+
+    utcTime = new Date(
+        wallTime.getTime() - offset
+    );
+
+
+    return utcTime;
 }
 
 
+/**
+ * Format converted time.
+ */
 function formatConvertedTime(
     date,
     timezone
 ) {
 
-    const format =
-        getTimeFormat();
-
+    const format = getTimeFormat();
 
     return new Intl.DateTimeFormat(
         "en-US",
@@ -135,6 +148,9 @@ function formatConvertedTime(
 }
 
 
+/**
+ * Format converted date.
+ */
 function formatConvertedDate(
     date,
     timezone
@@ -153,6 +169,9 @@ function formatConvertedDate(
 }
 
 
+/**
+ * Get the full timezone name.
+ */
 function getShortTimezoneName(
     date,
     timezone
@@ -167,124 +186,89 @@ function getShortTimezoneName(
     )
         .formatToParts(date)
         .find(
-            part =>
-                part.type === "timeZoneName"
+            part => part.type === "timeZoneName"
         )?.value || timezone;
 }
 
 
+/**
+ * Perform timezone conversion.
+ */
 function performConversion() {
 
-    const dateValue =
-        document.getElementById(
-            "dateInput"
-        ).value;
+    const dateInput =
+        document.getElementById("dateInput");
 
-
-    const timeValue =
-        document.getElementById(
-            "timeInput"
-        ).value;
-
+    const timeInput =
+        document.getElementById("timeInput");
 
     const fromTimezone =
-        document.getElementById(
-            "fromTimezone"
-        ).value;
-
+        document.getElementById("fromTimezone");
 
     const toTimezone =
-        document.getElementById(
-            "toTimezone"
-        ).value;
+        document.getElementById("toTimezone");
 
 
+    const dateValue =
+        dateInput.value;
+
+    const timeValue =
+        timeInput.value;
+
+    const fromZone =
+        fromTimezone.value;
+
+    const toZone =
+        toTimezone.value;
+
+
+    /*
+     * Make sure both date and time exist.
+     */
     if (!dateValue || !timeValue) {
         return;
     }
 
 
-    const [year, month, day] =
-        dateValue
-            .split("-")
-            .map(Number);
-
-
-    const [hours, minutes] =
-        timeValue
-            .split(":")
-            .map(Number);
+    /*
+     * Convert source timezone's wall-clock
+     * time into an actual UTC instant.
+     */
+    const utcDate = zonedTimeToUTC(
+        dateValue,
+        timeValue,
+        fromZone
+    );
 
 
     /*
-     * Create an initial UTC approximation.
-     * The converter then adjusts it using
-     * the actual source timezone offset.
+     * Convert that UTC instant into
+     * the destination timezone.
      */
-
-    const initialUTC =
-        new Date(
-            Date.UTC(
-                year,
-                month - 1,
-                day,
-                hours,
-                minutes
-            )
-        );
-
-
-    const sourceParts =
-        getLocalDateTimeParts(
-            initialUTC,
-            fromTimezone
-        );
-
-
-    const sourceAsUTC =
-        Date.UTC(
-            sourceParts.year,
-            sourceParts.month - 1,
-            sourceParts.day,
-            sourceParts.hour,
-            sourceParts.minute
-        );
-
-
-    const sourceOffset =
-        getTimezoneOffset(
-            initialUTC,
-            fromTimezone
-        );
-
-
-    const actualUTC =
-        new Date(
-            sourceAsUTC - sourceOffset
-        );
-
-
     const resultTime =
         formatConvertedTime(
-            actualUTC,
-            toTimezone
+            utcDate,
+            toZone
         );
 
 
     const resultDate =
         formatConvertedDate(
-            actualUTC,
-            toTimezone
+            utcDate,
+            toZone
         );
 
 
     const timezoneName =
         getShortTimezoneName(
-            actualUTC,
-            toTimezone
+            utcDate,
+            toZone
         );
 
 
+    /*
+     * Display result.
+     */
     document.getElementById(
         "resultTime"
     ).textContent = resultTime;
@@ -302,38 +286,36 @@ function performConversion() {
 
     document.getElementById(
         "conversionResult"
-    ).classList.remove(
-        "hidden"
-    );
+    ).classList.remove("hidden");
 }
 
 
+/**
+ * Set current date and time
+ * when the application starts.
+ */
 function setDefaultDateTime() {
 
     const now = new Date();
 
 
     const dateInput =
-        document.getElementById(
-            "dateInput"
-        );
-
+        document.getElementById("dateInput");
 
     const timeInput =
-        document.getElementById(
-            "timeInput"
-        );
+        document.getElementById("timeInput");
 
 
+    /*
+     * Use local browser date.
+     */
     const year =
         now.getFullYear();
-
 
     const month =
         String(
             now.getMonth() + 1
         ).padStart(2, "0");
-
 
     const day =
         String(
@@ -346,7 +328,6 @@ function setDefaultDateTime() {
             now.getHours()
         ).padStart(2, "0");
 
-
     const minutes =
         String(
             now.getMinutes()
@@ -355,7 +336,6 @@ function setDefaultDateTime() {
 
     dateInput.value =
         `${year}-${month}-${day}`;
-
 
     timeInput.value =
         `${hours}:${minutes}`;
