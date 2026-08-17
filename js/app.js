@@ -439,3 +439,38 @@ function swapTimezones() {
 
     performConversion();
 }
+
+function populateTimezoneSelects() {
+
+    const fromSelect =
+        document.getElementById("fromTimezone");
+
+    const toSelect =
+        document.getElementById("toTimezone");
+
+
+    if (!fromSelect || !toSelect) {
+        return;
+    }
+
+
+    const options = CLOCK_ZONES
+        .map(zone => `
+            <option value="${zone.timezone}">
+                ${zone.city} — ${zone.country}
+            </option>
+        `)
+        .join("");
+
+
+    fromSelect.innerHTML = options;
+
+    toSelect.innerHTML = options;
+
+
+    fromSelect.value =
+        "Asia/Kathmandu";
+
+    toSelect.value =
+        "America/New_York";
+}
