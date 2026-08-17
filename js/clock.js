@@ -8,47 +8,165 @@ const CLOCK_ZONES = [
         country: "Nepal",
         timezone: "Asia/Kathmandu"
     },
-
     {
-        city: "New York",
-        country: "USA",
-        timezone: "America/New_York"
+        city: "New Delhi",
+        country: "India",
+        timezone: "Asia/Kolkata"
     },
-
     {
-        city: "London",
-        country: "United Kingdom",
-        timezone: "Europe/London"
+        city: "Dhaka",
+        country: "Bangladesh",
+        timezone: "Asia/Dhaka"
     },
-
     {
-        city: "Tokyo",
-        country: "Japan",
-        timezone: "Asia/Tokyo"
+        city: "Bangkok",
+        country: "Thailand",
+        timezone: "Asia/Bangkok"
     },
-
-    {
-        city: "Sydney",
-        country: "Australia",
-        timezone: "Australia/Sydney"
-    },
-
     {
         city: "Singapore",
         country: "Singapore",
         timezone: "Asia/Singapore"
     },
-
+    {
+        city: "Shanghai",
+        country: "China",
+        timezone: "Asia/Shanghai"
+    },
+    {
+        city: "Hong Kong",
+        country: "Hong Kong",
+        timezone: "Asia/Hong_Kong"
+    },
+    {
+        city: "Tokyo",
+        country: "Japan",
+        timezone: "Asia/Tokyo"
+    },
+    {
+        city: "Seoul",
+        country: "South Korea",
+        timezone: "Asia/Seoul"
+    },
+    {
+        city: "Dubai",
+        country: "UAE",
+        timezone: "Asia/Dubai"
+    },
+    {
+        city: "Riyadh",
+        country: "Saudi Arabia",
+        timezone: "Asia/Riyadh"
+    },
+    {
+        city: "Istanbul",
+        country: "Turkey",
+        timezone: "Europe/Istanbul"
+    },
+    {
+        city: "Moscow",
+        country: "Russia",
+        timezone: "Europe/Moscow"
+    },
+    {
+        city: "London",
+        country: "United Kingdom",
+        timezone: "Europe/London"
+    },
     {
         city: "Paris",
         country: "France",
         timezone: "Europe/Paris"
     },
-
     {
-        city: "Dubai",
-        country: "UAE",
-        timezone: "Asia/Dubai"
+        city: "Berlin",
+        country: "Germany",
+        timezone: "Europe/Berlin"
+    },
+    {
+        city: "Rome",
+        country: "Italy",
+        timezone: "Europe/Rome"
+    },
+    {
+        city: "Madrid",
+        country: "Spain",
+        timezone: "Europe/Madrid"
+    },
+    {
+        city: "Cairo",
+        country: "Egypt",
+        timezone: "Africa/Cairo"
+    },
+    {
+        city: "Johannesburg",
+        country: "South Africa",
+        timezone: "Africa/Johannesburg"
+    },
+    {
+        city: "New York",
+        country: "USA",
+        timezone: "America/New_York"
+    },
+    {
+        city: "Chicago",
+        country: "USA",
+        timezone: "America/Chicago"
+    },
+    {
+        city: "Denver",
+        country: "USA",
+        timezone: "America/Denver"
+    },
+    {
+        city: "Los Angeles",
+        country: "USA",
+        timezone: "America/Los_Angeles"
+    },
+    {
+        city: "Honolulu",
+        country: "USA",
+        timezone: "Pacific/Honolulu"
+    },
+    {
+        city: "Toronto",
+        country: "Canada",
+        timezone: "America/Toronto"
+    },
+    {
+        city: "Vancouver",
+        country: "Canada",
+        timezone: "America/Vancouver"
+    },
+    {
+        city: "São Paulo",
+        country: "Brazil",
+        timezone: "America/Sao_Paulo"
+    },
+    {
+        city: "Buenos Aires",
+        country: "Argentina",
+        timezone: "America/Argentina/Buenos_Aires"
+    },
+    {
+        city: "Sydney",
+        country: "Australia",
+        timezone: "Australia/Sydney"
+    },
+    {
+        city: "Melbourne",
+        country: "Australia",
+        timezone: "Australia/Melbourne"
+    },
+    {
+        city: "Perth",
+        country: "Australia",
+        timezone: "Australia/Perth"
+    },
+    {
+        city: "Auckland",
+        country: "New Zealand",
+        timezone: "Pacific/Auckland"
     }
 ];
 
