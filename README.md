@@ -260,12 +260,12 @@ For the best development experience, use VS Code Live Server or another local de
 
 ---
 
-# 🌐 Live Demo
+## 🌐 Live Demo
 
 <p align="center">
-<a href="https://pokhrelsamir.github.io/TimeZoneX/">
-  <strong>🚀 Open TimeZoneX</strong>
-</a>
+  <a href="https://pokhrelsamir.github.io/TimeZoneX/">
+    <img src="https://img.shields.io/badge/Live%20Demo-TimeZoneX-6366f1?style=for-the-badge&logo=github" alt="Live Demo">
+  </a>
 </p>
 
 
