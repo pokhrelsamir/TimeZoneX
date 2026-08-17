@@ -474,3 +474,24 @@ function populateTimezoneSelects() {
     toSelect.value =
         "America/New_York";
 }
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        initializeTheme();
+
+        initializeFormat();
+
+        setDefaultDateTime();
+
+        populateTimezoneSelects();
+
+        renderClocks();
+
+        renderFavorites();
+
+        setupEvents();
+
+    }
+);
