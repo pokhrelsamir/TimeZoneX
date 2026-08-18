@@ -2,7 +2,7 @@
 
 <p align="center">
   <img
-    src="screenshots/world-clock.png"
+    src="https://github.com/user-attachments/assets/95e9ca94-85d6-4cce-bfe5-918c981964b9"
     alt="TimeZoneX World Clock"
     width="100%"
   >
@@ -58,7 +58,7 @@ TimeZoneX calculates the corresponding local time in the destination timezone wh
 
 <p align="center">
   <img
-    src="screenshots/time-converter.png"
+    src="https://github.com/user-attachments/assets/1410b779-5733-4f3e-914f-861500b3a5a2"
     alt="TimeZoneX Timezone Converter"
     width="100%"
   >
@@ -106,7 +106,7 @@ Favorites are stored using the browser's LocalStorage, so they remain available 
 
 <p align="center">
   <img
-    src="screenshots/favorite-timezones.png"
+    src="https://github.com/user-attachments/assets/0a59f16a-9540-4fe9-86aa-5a7e6f1857a7"
     alt="TimeZoneX Favorite Timezones"
     width="100%"
   >
